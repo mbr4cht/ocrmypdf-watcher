@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: 2024 Michael Bracht
+# SPDX-License-Identifier: MIT
+
+services:
+  ocrmypdfwatcher:
+    container_name: ocrmypdfwatcher
+    image: ocrmypdf-watcher:latest
+    restart: always
+    environment:
+      - OCR_INPUT_DIRECTORY=/input
+      - OCR_OUTPUT_DIRECTORY=/output
+    volumes:
+      - ../input:/input
+      - ../output:/output
