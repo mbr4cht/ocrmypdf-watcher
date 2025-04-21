@@ -21,7 +21,7 @@ RUN apt-get update && \
 
 # Copy tessdata_best training data
 RUN  rm -rf /usr/share/tesseract-ocr/5/tessdata
-COPY ../external/tessdata_best /usr/share/tesseract-ocr/5/tessdata
+COPY external/tessdata_best /usr/share/tesseract-ocr/5/tessdata
 
 # Install watchdog and watcher Python script
 RUN python -m pip install --break-system-packages --user --upgrade ocrmypdf
