@@ -1,18 +1,21 @@
-# SPDX-FileCopyrightText: 2024 Michael Bracht
+# SPDX-FileCopyrightText: 2024-2025 Michael Bracht
 # SPDX-License-Identifier: MIT
 
-import os, time, logging, sys, re
+import os
+import time
+import logging
+import sys
 from pathlib import Path
 
-from watchdog.events import RegexMatchingEventHandler
+from watchdog.events import PatternMatchingEventHandler
 from watchdog.observers.polling import PollingObserver
 
-INPUT_DIRECTORY = os.getenv("OCR_INPUT_DIRECTORY", "/input")
-OUTPUT_DIRECTORY = os.getenv("OCR_OUTPUT_DIRECTORY", "/output")
+INPUT_DIRECTORY = "/input"  # Has to be set in docker-compose.yml
+OUTPUT_DIRECTORY = "/output/"  # Has to be set in docker-compose.yml
 LOG_DIRECTORY = OUTPUT_DIRECTORY + "log/"
 LOG_FILE = LOG_DIRECTORY + "log.txt"
 
-REGEXES = [".*.pdf"]
+PATTERNS = ["*.pdf"]
 
 logger = logging.getLogger()
 
@@ -32,13 +35,16 @@ def setup_custom_logger(name):
 
 def execute_ocrmypdf(file_path):
     filename = Path(file_path).name
-    output_path = OUTPUT_DIRECTORY + "/" + filename
+    output_path = OUTPUT_DIRECTORY + filename
     logger.info("New file: {}".format(file_path))
     logger.info("Attempting to OCRmyPDF to {}".format(output_path))
 
     if os.path.exists(file_path):
         command = (
-            'ocrmypdf --redo-ocr --jobs 3 "' + file_path + '" "' + output_path + '"'
+            "ocrmypdf --language deu+eng --redo-ocr --jobs 3 "
+            + file_path
+            + " "
+            + output_path
         )
 
         logger.info("Command to run: {}".format(command))
@@ -65,15 +71,15 @@ def handle_existing_files(dir_path):
     logger.info("Handling existing files in path: {}".format(dir_path))
 
     for file in os.listdir(dir_path):
-        for REGEX in REGEXES:
-            re_pattern = re.compile(REGEX)
-            if re_pattern.match(file):
-                file_path = os.path.join(dir_path, file)
-                logger.info("Existing file: {}".format(file_path))
-                execute_ocrmypdf(file_path)
+        # Check if the file is a PDF
+        if not file.endswith(".pdf"):
+            continue
+        file_path = os.path.join(dir_path, file)
+        logger.info("Existing file: {}".format(file_path))
+        execute_ocrmypdf(file_path)
 
 
-class HandleObserverEvent(RegexMatchingEventHandler):
+class HandleObserverEvent(PatternMatchingEventHandler):
     def on_any_event(self, event):
         if event.event_type in ["created"]:
             logger.info("File event detected: {}".format(event.event_type))
@@ -99,8 +105,8 @@ if __name__ == "__main__":
     handle_existing_files(INPUT_DIRECTORY)
 
     # Then start observing file changes
-    handler = HandleObserverEvent(regexes=REGEXES)
-    observer = PollingObserver()
+    handler = HandleObserverEvent(patterns=PATTERNS)
+    observer = PollingObserver()  # Observer()
     observer.schedule(handler, INPUT_DIRECTORY, recursive=True)
     observer.start()
     try:
