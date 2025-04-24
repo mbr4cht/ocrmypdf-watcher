@@ -1,0 +1,6 @@
+# SPDX-FileCopyrightText: 2024-2025 Michael Bracht
+# SPDX-License-Identifier: MIT
+
+[submodule "external/tessdata_best"]
+	path = external/tessdata_best
+	url = https://github.com/tesseract-ocr/tessdata_best.git

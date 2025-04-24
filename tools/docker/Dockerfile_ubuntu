@@ -1,0 +1,30 @@
+# SPDX-FileCopyrightText: 2024-2025 Michael Bracht
+# SPDX-License-Identifier: MIT
+
+FROM ubuntu:24.04@sha256:1e622c5f073b4f6bfad6632f2616c7f59ef256e96fe78bf6a595d1dc4376ac02
+
+# Create ocrmypdf directory
+ENV OCRMYPDF_DIR=/ocrmypdf
+RUN mkdir -p ${OCRMYPDF_DIR}
+WORKDIR ${OCRMYPDF_DIR}
+
+# Install ocrmypdf and German language pack
+RUN apt-get update && \
+    apt-get install -y \
+        python3=3.12.3-0ubuntu2 \
+        python3-watchdog=3.0.0-1\
+        python3-pip=24.0+dfsg-1ubuntu1.1 \
+        python-is-python3=3.11.4-1 \
+        ocrmypdf=15.2.0+dfsg1-1 \
+        tesseract-ocr-deu=1:4.1.0-2 && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy tessdata_best training data
+RUN  rm -rf /usr/share/tesseract-ocr/5/tessdata
+COPY external/tessdata_best /usr/share/tesseract-ocr/5/tessdata
+
+# Install watchdog and watcher Python script
+RUN python -m pip install --break-system-packages --user --upgrade ocrmypdf
+COPY src/watcher.py ./
+
+CMD [ "python", "./watcher.py" ]
