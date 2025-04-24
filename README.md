@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](LICENSE)
 [![REUSE status](https://api.reuse.software/badge/github.com/mbr4cht/ocrmypdf-watcher)](https://api.reuse.software/info/github.com/mbr4cht/ocrmypdf-watcher)
 
-This is a simple OCR (optical character recognition) tool based on [OCRmyPDF](https://github.com/ocrmypdf/OCRmyPDF/tree/main).
+This is a simple OCR (optical character recognition) tool based on [OCRmyPDF](https://github.com/ocrmypdf/OCRmyPDF/tree/main). It watches an `input` folder for PDFs and moves the processed PDFs (with OCR applied) to an `output` folder.
 
 </div>
 
@@ -26,7 +26,6 @@ git submodule update --init --recursive --remote
 # How to use this tool with Docker
 
 This tool can be used as Docker image using the following convencience scripts.
-
 
 ## Build the Docker image
 
