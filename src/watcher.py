@@ -79,6 +79,12 @@ def handle_existing_files(dir_path):
         execute_ocrmypdf(file_path)
 
 
+def print_versions():
+    logger.info("Versions of OCRmyPDF, Ghostscript and Python:")
+    logger.info("OCRmyPDF version: {}".format(os.popen("ocrmypdf --version").read().strip()))
+    logger.info("Ghostscript version: {}".format(os.popen("gs --version").read().strip()))
+    logger.info("Python version: {}".format(sys.version.strip()))
+
 class HandleObserverEvent(PatternMatchingEventHandler):
     def on_any_event(self, event):
         if event.event_type in ["created"]:
@@ -96,6 +102,9 @@ if __name__ == "__main__":
 
     # Setup logger
     logger = setup_custom_logger("ocrmypdf")
+
+    # Print versions of OCRmyPDF, Ghostscript and Python
+    print_versions()
 
     logger.info("Starting OCRmyPDF watcher with config:")
     logger.info("Input Directory:  {}".format(INPUT_DIRECTORY))
