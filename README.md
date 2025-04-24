@@ -44,3 +44,10 @@ sudo .scripts/start_container.sh
 ```
 
 Adapt [.docker/docker-componse.yml](.docker/docker-componse.yml) to your specific needs. E.g. set the `input` and `output` folders.
+
+## Licensing
+
+Please see our [LICENSE](LICENSE) for copyright and license information.
+
+This project follows the [REUSE](https://reuse.software/) approach, so copyright and licensing information is
+available for every file (including third party components) either in the file header, an individual *.license file or a REUSE.toml file. All licenses can be found in the [LICENSES](LICENSES) folder.
