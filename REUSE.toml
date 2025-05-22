@@ -1,9 +1,11 @@
-# SPDX-FileCopyrightText: 2024 Michael Bracht
+# SPDX-FileCopyrightText: 2024-2025 Michael Bracht
 # SPDX-License-Identifier: MIT
 
 version = 1
 
 [[annotations]]
-path = "README.md"
-SPDX-FileCopyrightText = "2024 Michael Bracht"
+path = ["README.md",
+        "CHANGELOG.md"
+        ]
+SPDX-FileCopyrightText = "2024-2025 Michael Bracht"
 SPDX-License-Identifier = "CC0-1.0"
