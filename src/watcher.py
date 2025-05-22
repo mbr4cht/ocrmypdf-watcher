@@ -42,9 +42,9 @@ def execute_ocrmypdf(file_path):
     if os.path.exists(file_path):
         command = (
             "ocrmypdf --language deu+eng --redo-ocr --jobs 3 "
-            + file_path
+            + "\"" + file_path + "\""
             + " "
-            + output_path
+            + "\"" + output_path + "\""
         )
 
         logger.info("Command to run: {}".format(command))
